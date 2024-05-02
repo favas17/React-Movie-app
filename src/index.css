@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer components{
+  .input-field{
+  @apply w-64 h-12 border-4 bg-inherit border-none text-white
+  }
+
+
+
+  .form-field-sign{
+    @apply w-64 h-12  m-auto bg-gray-500 rounded-sm text-white
+  }
+
+  .input-field-sign{
+    @apply w-64 h-10 bg-transparent outline-none
+  }
+
+  .bg-image{
+    background-image:  linear-gradient(to top, rgba(0, 0, 0, 0.8) 0, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.8) 100%) ,url('../src/assets/appBg.jpg');
+  }
+}
