@@ -1,7 +1,7 @@
 import poster from "../assets/godfather.jpg"
 import { IoIosStar } from "react-icons/io";
-
-function MovieCard() {
+import { Link } from "react-router-dom";
+function MovieCard({title,id}) {
 
     return(
 
@@ -10,7 +10,7 @@ function MovieCard() {
                 <img className=" object-cover" src={poster} alt="" />
             </div>
 
-            <h2 className="text-white">movie name</h2>
+            <h2 className="text-white">{title}</h2>
 
             <div>
                 <h5> <IoIosStar className="text-yellow-400" /></h5>

@@ -1,7 +1,18 @@
 import MovieCard from "../components/MovieCard"
 import cover from "../assets/godfatherCover.avif"
+import { useState,useEffect } from "react"
+import { Link } from "react-router-dom"
 function UserHome() {
 
+    const[movies,setMovies] = useState([])
+
+
+    useEffect(()=>{
+        const storedMovies = JSON.parse(localStorage.getItem("movies"))
+        if(storedMovies){
+            setMovies(storedMovies)
+        }
+    },[])
     return(
 
         <div className="w-full h-full bg-black">
@@ -10,14 +21,11 @@ function UserHome() {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 p-7  ">
-                <MovieCard/>
-                <MovieCard/>
-                <MovieCard/>
-                <MovieCard/>
-                <MovieCard/>
-                <MovieCard/>
-                <MovieCard/>
-                <MovieCard/>
+                {movies.map((movie,index)=>(
+                    <Link to={`/MovieDetails/${movie.id}`} key={movie.id}>
+                        <MovieCard title={movie.title}/>
+                    </Link>
+                ))}
 
             </div>
         </div>
