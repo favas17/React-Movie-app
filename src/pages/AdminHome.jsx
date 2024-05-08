@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useMovieContext } from "../Redux/useContext";
 import { useNavigate } from "react-router-dom";
-
 function AdminHome() {
-
     const {movies,deleteMovie} = useMovieContext();
 
     const handleDelete = (id)=>{
@@ -13,13 +11,7 @@ function AdminHome() {
 
     }
 
-    // Fetching movies from local storage
-    // useEffect(() => {
-    //     const storedMovies = JSON.parse(localStorage.getItem("movies"));
-    //     if (storedMovies) {
-    //         setMovies(storedMovies);
-    //     }
-    // }, [deleteMovie]);
+
 
     return (
         <div className="bg-black text-white w-full h-full  p-6">

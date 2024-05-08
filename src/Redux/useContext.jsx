@@ -1,61 +1,71 @@
-import { createContext,useContext,useState,useEffect } from "react";
+// MovieProvider.jsx
+import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-// create a context
+
 const MovieContext = createContext();
 
-// create a custom hook to use the movie context
-export const useMovieContext = ()=>useContext(MovieContext);
+export const useMovieContext = () => useContext(MovieContext);
 
-// movie provider component to wrap the app and provide the context
-export const MovieProvider = ({children}) =>{
+export const MovieProvider = ({ children }) => {
     const navigate = useNavigate();
-    const [movies,setMovies] = useState([]);
+    const [movies, setMovies] = useState([]);
 
-    // load movies from local storage from intial render
-    useEffect(()=>{
+    useEffect(() => {
         const storedMovies = JSON.parse(localStorage.getItem("movies"));
-        if(storedMovies){
-            setMovies(storedMovies)
+        if (Array.isArray(storedMovies)) {
+            setMovies(storedMovies);
         }
-    },[])
+    }, []);
 
-    // function to add movie
-    const addMovie = (movie) =>{
-        const updatedMovies = [
-            ...movies,
-               movie];
+    const addMovie = (movie) => {
+    // Retrieve existing movies from local storage
+    const storedMovies = JSON.parse(localStorage.getItem("movies")) || [];
+    
+    // Append the new movie to the existing array
+    const updatedMovies = [
+        ...storedMovies,
+        {
+            ...movie,
+            review: movie.review || []
+        }
+    ];
+    
+    // Update the state with the new movies array
+    setMovies(updatedMovies);
+    
+    // Store the updated movies array in local storage
+    localStorage.setItem("movies", JSON.stringify(updatedMovies));
+};
+    const addReview = (movieId, rating, review) => {
+        setMovies((prevMovies) => {
+            const updatedMovies = prevMovies.map((movie) => {
+                if (movie.id === movieId) {
+                    const newReview = { rating, review, date: new Date().toISOString() };
+                    return { ...movie, review: [...movie.review, newReview] };
+                }
+                return movie;
+            });
+            localStorage.setItem("movies", JSON.stringify(updatedMovies));
+            return updatedMovies;
+        });
+    };
+
+    const updatedMovie = (id, updatedData) => {
+        const updatedMovies = movies.map((movie) => (movie.id === id ? { ...movie, ...updatedData } : movie));
         setMovies(updatedMovies);
-        // save updated movies to local storage
-        localStorage.setItem("movies",JSON.stringify(updatedMovies));
-        }
+        localStorage.setItem("movies", JSON.stringify(updatedMovies));
+        navigate("/AdminHome");
+    };
 
+    const deleteMovie = (id) => {
+        const updatedMovies = movies.filter((movie) => movie.id !== id);
+        setMovies(updatedMovies);
+        localStorage.setItem("movies", JSON.stringify(updatedMovies));
+    };
 
-        // function toupdate movie
-        const updatedMovie = (id,updatedData) =>{
-            const updatedMovies = movies.map(movie => movie.id === id ?{...movie,...updatedData}:movie);
-
-            setMovies(updatedMovies);
-
-            localStorage.setItem("movies",JSON.stringify(updatedMovies))
-            navigate("/AdminHome")
-        }
-
-        // function to delete movie
-        const deleteMovie = (id) =>{
-            const updatedMovies = movies.filter(movie => movie.id !== id);
-            setMovies(updatedMovies);
-
-            // save updated movies to lstorage
-            localStorage.setItem("movies",JSON.stringify(updatedMovies))
-
-
-            
-        }
-
-
-    return(
-        <MovieContext.Provider value={{movies,addMovie,updatedMovie,deleteMovie}}>
+    return (
+        <MovieContext.Provider value={{ movies, addMovie, updatedMovie, deleteMovie, addReview }}>
             {children}
         </MovieContext.Provider>
-    )
-}
+    );
+};

@@ -4,15 +4,15 @@ import { useMovieContext } from '../Redux/useContext';
 import {v4 as uuidv4} from "uuid"
 import FormicForm from '../components/FormicMovieForm';
 
-const AddMovies = (onSubmit,buttonLabel,initialValues) => {
+const AddMovies = () => {
 
     const {addMovie} = useMovieContext();
 
     const handleSubmit = (values) => {
         const moviesId = {...values,id: uuidv4()}; 
         addMovie(moviesId)
-        console.log(moviesId)
     }
+    const adem = JSON.parse(localStorage.getItem("movies"))
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-image bg-cover">
