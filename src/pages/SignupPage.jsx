@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import AuthButton from "../components/Button";
 import {useDispatch} from "react-redux";
 import { saveUserDetails } from "../Redux/reducers/userReducer";
+import { useNavigate } from "react-router-dom";
 
 function SignupPage() {
   const [formData, setFormData] = useState({
@@ -10,8 +11,10 @@ function SignupPage() {
     email: "",
     password: "",
     confirm_password: "",
+    role:""
   });
 
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   
@@ -38,6 +41,11 @@ function SignupPage() {
       return;
     }
 
+    const updatedFormData = {
+      ...formData,role:"user"
+    }
+
+
       // retrieve the exsting data from the local storage
       const existUser = localStorage.getItem("users");
       let usersArray = [];
@@ -47,15 +55,16 @@ function SignupPage() {
       }
 
       // add the new user to the array
-      usersArray.push(formData)
+      usersArray.push(updatedFormData)
 
       // save the updated user data array to local storage
       localStorage.setItem("users",JSON.stringify(usersArray));
-      console.log("user sigend in", formData)
+      dispatch(saveUserDetails(updatedFormData));
+      
+      navigate("/")
   };
   
   // dispatch action to save user details in redux state
-  dispatch(saveUserDetails(formData));
 
 
 

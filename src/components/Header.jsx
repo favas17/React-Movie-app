@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../assets/mainLogo.png"
+import { useMovieContext } from "../Redux/useContext";
+import {debounce}  from "lodash"
 
 const Header = () => {
+
+  const {setSearchQuery} = useMovieContext();
+  const [searchInput,setSearchInput] = useState();
+
+  const debounceSearch = debounce(setSearchQuery,300)
+
+  const handleSearch = (e)=>{
+    const query = e.target.value
+    setSearchInput(query)
+    debounceSearch(query.toLowerCase())
+  }
+
   return (
     <header className="bg-black w-full text-white p-4 flex flex-col md:flex-row  justify-between items-center ">
       {/* Logo */}
@@ -16,6 +30,8 @@ const Header = () => {
           type="text"
           placeholder="Search..."
           className="px-4 py-2 w-full bg-[#232323] rounded-lg text-white focus:outline-none"
+          value={searchInput}
+          onChange={handleSearch}
         />
       </div>
 

@@ -10,6 +10,9 @@ export const MovieProvider = ({ children }) => {
     const navigate = useNavigate();
     const [movies, setMovies] = useState([]);
 
+    // search function
+    const [searchQuery,setSearchQuery] = useState("");
+
     useEffect(() => {
         const storedMovies = JSON.parse(localStorage.getItem("movies"));
         if (Array.isArray(storedMovies)) {
@@ -35,7 +38,9 @@ export const MovieProvider = ({ children }) => {
     
     // Store the updated movies array in local storage
     localStorage.setItem("movies", JSON.stringify(updatedMovies));
+    navigate("/AddMovie")
 };
+
     const addReview = (movieId, rating, review) => {
         setMovies((prevMovies) => {
             const updatedMovies = prevMovies.map((movie) => {
@@ -64,7 +69,7 @@ export const MovieProvider = ({ children }) => {
     };
 
     return (
-        <MovieContext.Provider value={{ movies, addMovie, updatedMovie, deleteMovie, addReview }}>
+        <MovieContext.Provider value={{ movies, addMovie, updatedMovie, deleteMovie, addReview,searchQuery,setSearchQuery }}>
             {children}
         </MovieContext.Provider>
     );

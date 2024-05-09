@@ -3,10 +3,12 @@ import { Yupval } from '../utils/YupVal';
 import { useMovieContext } from '../Redux/useContext';
 import {v4 as uuidv4} from "uuid"
 import FormicForm from '../components/FormicMovieForm';
+import { useNavigate } from 'react-router-dom';
 
 const AddMovies = () => {
 
     const {addMovie} = useMovieContext();
+    const {navigate} = useNavigate();
 
     const handleSubmit = (values) => {
         const moviesId = {...values,id: uuidv4()}; 

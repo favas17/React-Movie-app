@@ -11,6 +11,7 @@ import { MovieProvider } from "./Redux/useContext.jsx";
 import MovieDetails from "./pages/MoviesDetails.jsx";
 import AdminHome from "./pages/AdminHome.jsx";
 import EditMovie from "./pages/EditMovie.jsx";
+import RouteGuard from "./utils/RouteGuard.jsx";
 
 function App() {
     return (
@@ -20,14 +21,28 @@ function App() {
         <Routes>
         <Route path="/" element={<LoginPage/>} />
             <Route path="/Signup" element={<SignupPage/>} />
+            <Route 
+            element={<RouteGuard roles={["user","admin"]} />}
+            >
             <Route path="/" element={<UserLayout/>}>
-            <Route path="/movieCard" element={<MovieCard/>} />
-            <Route path="/UserHome" element={<UserHome/>} />
-            <Route path="/AddMovie" element={<AddMovie/>} />
-            <Route path="/MovieDetails/:id" element={<MovieDetails/>} />
-            <Route path="/AdminHome" element={<AdminHome/>} />
-            <Route path="/EditMovie/:id" element={<EditMovie/>} />
+               <Route path="/UserHome" element={<UserHome/>} />
+               <Route path="/MovieDetails/:id" element={<MovieDetails/>} />
             </Route>
+            </Route>
+            
+
+            <Route
+            element={<RouteGuard roles={["admin"]}/>}
+            >
+           <Route path="/AddMovie" element={<AddMovie/>} />
+              <Route path="/AdminHome" element={<AdminHome/>} />
+              <Route path="/EditMovie/:id" element={<EditMovie/>} />
+            </Route>
+            
+
+
+
+        
             
             
         </Routes>            

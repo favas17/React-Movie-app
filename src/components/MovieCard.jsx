@@ -11,7 +11,7 @@ function MovieCard({title,poster,id}) {
             return 0;
         }
 
-        const totalRating = movie.review.reduce((acc,curr)=> acc + curr.review, 0);
+        const totalRating = movie.review.reduce((acc,curr)=> acc + curr.rating, 0);
         const avrgRating = totalRating / movie.review.length;
 
         return avrgRating;
@@ -36,7 +36,7 @@ function MovieCard({title,poster,id}) {
 
         <div className="flex flex-col justify-evenly items-center border-2 border-[#232323] h-96 ">
             <div className="w-full h-full">
-                <img className=" h-80  w-full object-cover" src={poster} alt="" />
+                <img className=" h-80  w-full object-fill" src={poster} alt="" />
             </div>
 
             <h2 className="text-white h-5">{title}</h2>

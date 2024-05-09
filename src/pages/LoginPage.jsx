@@ -1,11 +1,17 @@
-import { useForm } from "react-hook-form";
+import { useForm, } from "react-hook-form";
 import { Link,useNavigate } from "react-router-dom";
 import AuthButton from "../components/Button";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { saveUserDetails } from "../Redux/reducers/userReducer";
 
 
 function LoginPage() {
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit,formState: { errors}, } = useForm();
     const Navigate = useNavigate()
+    const dispatch = useDispatch()
+    // setting error message
+    const [errorMsg,setErrorMsg] = useState("");
 
     const onSubmit = (data) => {
         const {email,password} = data;
@@ -16,14 +22,29 @@ function LoginPage() {
         const user = storedUsers.find((user)=>user.email===email);
 
         if(!user){
-          console.log("email error")  
-          return;
+            setErrorMsg("Email not found")
+            return;
         }
+
+        const {role} = user
+        console.log(role)
 
         if(user.password === password){
             console.log("user logged in successfully")
-            Navigate('/UserHome')
+
+            dispatch(saveUserDetails(user))
+
+            if(role === "admin"){
+                Navigate('/AdminHome')
+            }
+            else if(role === "user"){
+                Navigate('/UserHome')
+            }
+        }else {
+            setErrorMsg("Incorrect Password")
         }
+        
+      
 
     };
 
@@ -49,8 +70,9 @@ function LoginPage() {
                                     <input className="input-field" type="password" name="password" id="password" placeholder="Enter your password" autoComplete="off"
                                         {...register("password", { required: true })}
                                     />
-                                    {(errors && errors.password) && <p className="text-red-500">Enter your password</p>}
+                                    {(errors && errors.password)  && <p className="text-red-500">Enter your password</p>}
                                 </div>
+                                {errorMsg && <p className="text-red-500">{errorMsg}</p>}
                                 <p className='text-white'>Forgot password?</p>
                                 <div className="btns w-full flex justify-evenly">
                                     <AuthButton label="Login" className="log-btn border-none transpa w-24 bg-[#687c78] rounded-md" onClick={handleSubmit(onSubmit)} />

@@ -5,15 +5,33 @@ import cover from "../assets/godfatherCover.avif";
 import { useState } from "react";
 
 function UserHome() {
-    const { movies } = useMovieContext();
+    const { movies, searchQuery} = useMovieContext();
+    
+    // filtering
+    const [highRated,setHighRated] = useState(false);
+    console.log(highRated)
+    // toggling high rated
+    const toggleHighRated = ()=>{
+        setHighRated(!highRated)
+    }
 
     const [currentPage, setCurrentPage] = useState(1);
+
     const moviesPerPage = 10;
 
     // Logic to calculate index range for movies on current page
     const indexOfLastMovie = currentPage * moviesPerPage;
     const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-    const currentMovies = movies.slice(indexOfFirstMovie, indexOfLastMovie);
+
+    const filteredMovies = movies.filter((movie) =>
+        movie.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
+        (!highRated || (movie.review && movie.review.some(review => review.rating >4)))
+    );
+
+    
+    const currentMovies = filteredMovies.slice(indexOfFirstMovie,indexOfLastMovie)
+
+    // const  = movies.slice(indexOfFirstMovie, indexOfLastMovie);
 
     // Logic to handle pagination
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -25,11 +43,19 @@ function UserHome() {
         }
     };
 
+
+  
+
     return (
         <div className="w-full h-full bg-black">
-            <div className="h-2/4 w-full border-b-8 border-[#232323]">
-                <img className="h-2/4 w-4/6 object-cover m-auto mb-5" src={cover} alt="" />
+            <div className="h-96 w-full border-b-8 border-[#232323]">
+                <img className="h-full md:w-4/6 w-full  object-cover m-auto " src={cover} alt="" />
             </div>
+
+            {/* filter button */}
+            <button onClick={toggleHighRated} className="text-white mt-4 ml-4 mb-2 bg-[#252529] px-4 py-2 rounded-lg">
+                {highRated ? "Hide High Rated" : "Show High Rated"}
+            </button>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 p-7">
                 {currentMovies.map((movie) => (

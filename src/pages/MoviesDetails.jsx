@@ -83,6 +83,8 @@ function MovieDetails() {
                     <p className="mb-4"><strong>Description:</strong> {movie.description}</p>
 
                     <p className="mb-4 flex items-center"><strong>Average Rating:</strong> {averageStar()} </p>
+
+                    {/* review and rating area */}
                     <div className="flex items-center mb-4">
                     {[...Array(5)].map((_, index) => (
                   <IoIosStar
