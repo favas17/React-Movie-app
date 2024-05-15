@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import logo from "../assets/mainLogo.png"
 import { useMovieContext } from "../Redux/useContext";
 import {debounce}  from "lodash"
+import { logoutUser } from "../Redux/reducers/userReducer";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"
 
 const Header = () => {
 
   const {setSearchQuery} = useMovieContext();
   const [searchInput,setSearchInput] = useState();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const debounceSearch = debounce(setSearchQuery,300)
 
@@ -15,6 +21,34 @@ const Header = () => {
     setSearchInput(query)
     debounceSearch(query.toLowerCase())
   }
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your account.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085D6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, log out",
+      cancelButtonText: "Cancel",
+      backdrop: "rgba(0,0,0,0.9)",
+      customClass: {
+        container: "custom-swal-container",
+        popup: "custom-swal-popup",
+        title: "custom-swal-title",
+        text: "custom-swal-text",
+        confirmButton: "custom-swal-confirm-button",
+        cancelButton: "custom-swal-cancel-button",
+        backdrop: "rgba(0,0,0,0.9)",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(logoutUser());
+        navigate("/");
+      }
+    });
+  };
 
   return (
     <header className="bg-black w-full text-white p-4 flex flex-col md:flex-row  justify-between items-center ">
@@ -40,7 +74,7 @@ const Header = () => {
         <ul className="flex space-x-4">
           <li><a href="#" className="text-white">About Us</a></li>
           <li><a href="#" className="text-white">Contact Us</a></li>
-          <li><button className="px-4 bg-transparent  text-white rounded-lg">Log Out</button></li>
+          <li><button onClick={handleLogout} className="px-4 bg-transparent  text-white rounded-lg">Log Out</button></li>
         </ul>
       </nav>
     </header>

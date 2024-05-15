@@ -9,7 +9,6 @@ function UserHome() {
     
     // filtering
     const [highRated,setHighRated] = useState(false);
-    console.log(highRated)
     // toggling high rated
     const toggleHighRated = ()=>{
         setHighRated(!highRated)
