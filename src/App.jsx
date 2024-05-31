@@ -2,7 +2,6 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import UserLayout from "./layout/userLayout";
 import {BrowserRouter,Routes,Route} from "react-router-dom"
-import MovieCard from "./components/MovieCard";
 import UserHome from "./pages/UserHome";
 import { Provider } from 'react-redux'
 import Store from "./Redux/store.jsx"
@@ -19,32 +18,32 @@ function App() {
         <MovieProvider>
         <Provider store={Store}>
         <Routes>
+
         <Route path="/" element={<LoginPage/>} />
-            <Route path="/Signup" element={<SignupPage/>} />
+        <Route path="/Signup" element={<SignupPage/>} />
+
             <Route 
             element={<RouteGuard roles={["user","admin"]} />}
             >
+
             <Route path="/" element={<UserLayout/>}>
                <Route path="/UserHome" element={<UserHome/>} />
                <Route path="/MovieDetails/:id" element={<MovieDetails/>} />
             </Route>
+
             </Route>
             
 
             <Route
             element={<RouteGuard roles={["admin"]}/>}
             >
+
            <Route path="/AddMovie" element={<AddMovie/>} />
               <Route path="/AdminHome" element={<AdminHome/>} />
               <Route path="/EditMovie/:id" element={<EditMovie/>} />
             </Route>
             
-
-
-
-        
-            
-            
+  
         </Routes>            
         </Provider>
         </MovieProvider>

@@ -73,7 +73,7 @@ function LoginPage() {
                                     {(errors && errors.password)  && <p className="text-red-500">Enter your password</p>}
                                 </div>
                                 {errorMsg && <p className="text-red-500">{errorMsg}</p>}
-                                <p className='text-white'>Forgot password?</p>
+                                <p className='text-white'>Forgot password?</p>  
                                 <div className="btns w-full flex justify-evenly">
                                     <AuthButton label="Login" className="log-btn border-none transpa w-24 bg-[#687c78] rounded-md" onClick={handleSubmit(onSubmit)} />
                                     <Link to="/Signup"><AuthButton label="Sign Up" className="sig-btn border-none w-24 bg-[#687c78] rounded-md" /> </Link>
